@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MDF Produção</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <div id="login" class="login">
+        <div class="login-box">
+            <div class="icone">🪵</div>
+
+            <h1>MDF Produção</h1>
+            <p>Controle de produção e estoque</p>
+
+            <label>
+                Usuário
+                <input type="text" id="usuarioLogin" placeholder="Digite seu usuário">
+            </label>
+
+            <label>
+                Senha
+                <input type="password" id="senhaLogin" placeholder="Digite sua senha">
+            </label>
+
+            <button class="principal" onclick="entrar()">
+                Entrar
+            </button>
+
+            <p class="dados-login">
+                Usuário: mariana<br>
+                Senha: 1712
+            </p>
+        </div>
+    </div>
+
+
+    <div id="sistema" class="oculto">
+
+        <header>
+            <div>
+                <h1>🪵 MDF Produção</h1>
+            </div>
+
+            <div class="usuario-header">
+                <span id="usuarioLogado"></span>
+                <button onclick="sair()">Sair</button>
+            </div>
+        </header>
+
+
+        <nav>
+            <button onclick="mostrarPagina('dashboard')">
+                Início
+            </button>
+
+            <button onclick="mostrarPagina('produtos')">
+                Produtos
+            </button>
+
+            <button onclick="mostrarPagina('pedidos')">
+                Pedidos
+            </button>
+
+            <button onclick="mostrarPagina('producoes')">
+                Produção
+            </button>
+
+            <button onclick="mostrarPagina('historico')">
+                Histórico
+            </button>
+        </nav>
+
+
+        <main>
+
+            <div id="dashboard" class="pagina">
+
+                <div class="cabecalho-pagina">
+                    <div>
+                        <h2>Painel de Controle</h2>
+                        <p>Acompanhe estoque, pedidos e produção</p>
+                    </div>
+                </div>
+
+
+                <div class="resumo">
+
+                    <div>
+                        <span>Produtos cadastrados</span>
+                        <strong id="totalProdutos">0</strong>
+                    </div>
+
+                    <div>
+                        <span>Total em estoque</span>
+                        <strong id="totalEstoque">0</strong>
+                    </div>
+
+                    <div>
+                        <span>Estoque baixo</span>
+                        <strong id="estoqueBaixo">0</strong>
+                    </div>
+
+                    <div>
+                        <span>Pedidos</span>
+                        <strong id="totalPedidos">0</strong>
+                    </div>
+
+                    <div>
+                        <span>Em produção</span>
+                        <strong id="emProducao">0</strong>
+                    </div>
+
+                    <div>
+                        <span>Produções concluídas</span>
+                        <strong id="producoesConcluidas">0</strong>
+                    </div>
+
+                </div>
+
+
+                <section>
+
+                    <div class="titulo-lista">
+                        <div>
+                            <h2>Alerta de estoque</h2>
+                            <p>Produtos que precisam ser produzidos</p>
+                        </div>
+                    </div>
+
+                    <div id="listaAlertas"></div>
+
+                </section>
+
+            </div>
+
+
+            <div id="produtos" class="pagina oculto">
+
+                <section>
+
+                    <div class="titulo-lista">
+
+                        <div>
+                            <h2>Produtos</h2>
+                            <p>Gerencie os produtos fabricados</p>
+                        </div>
+
+                        <button class="principal" onclick="abrirModalProduto()">
+                            + Novo produto
+                        </button>
+
+                    </div>
+
+                    <div id="listaProdutos"></div>
+
+                </section>
+
+            </div>
+
+
+            <div id="pedidos" class="pagina oculto">
+
+                <section>
+
+                    <div class="titulo-lista">
+
+                        <div>
+                            <h2>Pedidos</h2>
+                            <p>Registre as saídas do estoque</p>
+                        </div>
+
+                        <button class="principal" onclick="abrirModalPedido()">
+                            + Novo pedido
+                        </button>
+
+                    </div>
+
+                    <div id="listaPedidos"></div>
+
+                </section>
+
+            </div>
+
+
+            <div id="producoes" class="pagina oculto">
+
+                <section>
+
+                    <div class="titulo-lista">
+
+                        <div>
+                            <h2>Produção</h2>
+                            <p>Controle a fabricação dos produtos</p>
+                        </div>
+
+                        <button class="principal" onclick="abrirModalProducao()">
+                            + Registrar produção
+                        </button>
+
+                    </div>
+
+                    <div id="listaProducoes"></div>
+
+                </section>
+
+            </div>
+
+
+            <div id="historico" class="pagina oculto">
+
+                <section>
+
+                    <div class="titulo-lista">
+                        <div>
+                            <h2>Histórico</h2>
+                            <p>Ações realizadas pelos usuários</p>
+                        </div>
+                    </div>
+
+                    <div id="listaHistorico"></div>
+
+                </section>
+
+            </div>
+
+        </main>
+
+    </div>
+
+
+    <div id="modalProduto" class="modal oculto">
+
+        <div class="modal-box">
+
+            <h2>Novo produto</h2>
+
+            <label>
+                Nome
+                <input type="text" id="nomeProduto" placeholder="Ex: Mesa MDF">
+            </label>
+
+            <label>
+                Descrição
+                <input type="text" id="descricaoProduto" placeholder="Descrição do produto">
+            </label>
+
+            <label>
+                Custo
+                <input type="number" id="custoProduto" step="0.01" min="0">
+            </label>
+
+            <label>
+                Quantidade em estoque
+                <input type="number" id="estoqueProduto" min="0">
+            </label>
+
+            <label>
+                Estoque mínimo
+                <input type="number" id="minimoProduto" min="0">
+            </label>
+
+            <div class="botoes">
+                <button onclick="fecharModalProduto()">
+                    Cancelar
+                </button>
+
+                <button class="principal" onclick="salvarProduto()">
+                    Salvar
+                </button>
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div id="modalPedido" class="modal oculto">
+
+        <div class="modal-box">
+
+            <h2>Novo pedido</h2>
+
+            <label>
+                Produto
+                <select id="produtoPedido"></select>
+            </label>
+
+            <label>
+                Quantidade
+                <input type="number" id="quantidadePedido" min="1">
+            </label>
+
+            <label>
+                Data do pedido
+                <input type="date" id="dataPedido">
+            </label>
+
+            <div class="botoes">
+
+                <button onclick="fecharModalPedido()">
+                    Cancelar
+                </button>
+
+                <button class="principal" onclick="salvarPedido()">
+                    Registrar pedido
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div id="modalProducao" class="modal oculto">
+
+        <div class="modal-box">
+
+            <h2>Registrar produção</h2>
+
+            <label>
+                Produto
+                <select id="produtoProducao"></select>
+            </label>
+
+            <label>
+                Quantidade fabricada
+                <input type="number" id="quantidadeProducao" min="1">
+            </label>
+
+            <label>
+                Data
+                <input type="date" id="dataProducao">
+            </label>
+
+            <label>
+                Status
+                <select id="statusProducao">
+                    <option value="Planejada">Planejada</option>
+                    <option value="Em produção">Em produção</option>
+                    <option value="Concluída">Concluída</option>
+                </select>
+            </label>
+
+            <div class="botoes">
+
+                <button onclick="fecharModalProducao()">
+                    Cancelar
+                </button>
+
+                <button class="principal" onclick="salvarProducao()">
+                    Salvar produção
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <script src="script.js"></script>
+
+</body>
+
+</html>

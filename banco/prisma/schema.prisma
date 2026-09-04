@@ -5,24 +5,57 @@ generator client {
 datasource db {
   provider = "mysql"
 }
+model usuarios {
+  id        Int      @id @default(autoincrement())
+  nome      String
+  usuario   String   @unique
+  senha     String
+  pedidos   pedidos[]
+  producoes producao[]
+}
+
 model clientes {
-  id       Int      @id @default(autoincrement())
-  nome     String
-  telefone String
-  email    String
-  tipo     String
-}
-model pedidos {
   id        Int      @id @default(autoincrement())
-  data      DateTime
-  status    String
-  idCliente Int
-}
-model produtos {
-  id        Int      @id @default(autoincrement())
-  produto   String
-  descricao String
-  preco     Float
+  nome      String
+  telefone  String
+  email     String
   tipo      String
-  imagem    String
+  pedidos   pedidos[]
+}
+
+model produtos {
+  id          Int         @id @default(autoincrement())
+  produto     String
+  descricao   String
+  custo       Float
+  estoque     Int
+  estoqueMin Int
+  pedidos     pedidos[]
+  producoes   producao[]
+}
+
+model pedidos {
+  id          Int       @id @default(autoincrement())
+  data        DateTime  @default(now())
+  status      String
+  quantidade  Int
+  idCliente   Int
+  idProduto   Int
+  idUsuario   Int
+
+  cliente     clientes  @relation(fields: [idCliente], references: [id])
+  produto     produtos  @relation(fields: [idProduto], references: [id])
+  usuario     usuarios  @relation(fields: [idUsuario], references: [id])
+}
+
+model producao {
+  id              Int       @id @default(autoincrement())
+  data            DateTime  @default(now())
+  quantidade      Int
+  status          String
+  idProduto       Int
+  idUsuario       Int
+
+  produto         produtos  @relation(fields: [idProduto], references: [id])
+  usuario         usuarios  @relation(fields: [idUsuario], references: [id])
 }
